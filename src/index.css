@@ -10,6 +10,8 @@
   --input-border-color: #303030;
   --dark-background: #444144;
   --message-bolor-color: #dedede;
+  --margin-top-1rem: 1rem;
+  --margin-left-1rem: 1rem;
 }
 
 html.dark {
@@ -144,4 +146,43 @@ button:-webkit-details-marker {
 
 .Widget {
   margin-left: 1rem;
+}
+
+.toggle-dark, .toggle-light {
+  display: flex;
+  padding: 3px;
+  border-radius: 4px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.toggle-dark {
+  background-color: rgb(50, 50, 50); // almost white
+}
+.toggle-light {
+  background-color: rgb(250, 250, 250); // dark gray
+}
+.dark-btn-theme, .light-btn-theme {
+  margin: .3rem;
+  padding: .3rem;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 50px;
+  text-align: center;
+}
+.dark-btn-theme {
+  background-color: rgb(50, 50, 50);
+  color: rgb(250, 250, 250);
+}
+.light-btn-theme {
+  background-color: rgb(250, 250, 250);
+  color: rgb(50, 50, 50);
+}
+
+.margin-top-1rem {
+  margin-top: var(--margin-top-1rem);
+}
+
+.margin-left-1rem {
+  margin-left: var(--margin-left-1rem);
 }

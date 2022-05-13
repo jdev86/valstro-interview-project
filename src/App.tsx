@@ -1,6 +1,7 @@
 import { useReducer, useEffect, useState } from "react";
 import { fromEvent, Timestamp, timestamp } from "rxjs";
 import { ID_KEY, MESSAGES, UPDATE_MESSAGES, USER, USER_PROFILE } from "./constants";
+import useTheme from "./hooks/useTheme";
 import { AppReducer } from "./reducers/appReducer";
 import types from "./types/index";
 
@@ -20,6 +21,8 @@ const initialState = {
 
 export const App = () => {
   const bc = new BroadcastChannel('message_channel');
+
+  const {appTheme, toggleTheme} = useTheme();
 
   const [state, dispatch] = useReducer(AppReducer, initialState)
   const sessionId = sessionStorage.getItem(ID_KEY);
@@ -73,6 +76,7 @@ export const App = () => {
     }
   }
 
+  // Clears all in-use values from localStorage and local state
   function cleanSlate() {
     dispatch({type: types.MESSAGES, value: []});
     localStorage.removeItem([USER_PROFILE, sessionId].join('-'));
@@ -116,19 +120,33 @@ export const App = () => {
   }
 
   return (
-    <div className="App">
-      <div className="Widget">
-        <header className="Widget-header">
-          <h1>Valstro Frontend Challenge:</h1>
+    <div className="App margin-top-1rem"  style={{background: appTheme === 'dark' ? '#3a3b3d' : '#fff',
+    color: appTheme === 'dark' ? '#fff' : '#000'}}>
+      <div className="Widget margin-top-1rem">
+        <header className="Widget-header" style={{marginLeft: '2rem', paddingTop: '.25rem'}}>
+          <h1>Valstro Frontend Challenge</h1>
+          <div className={appTheme === 'light' ? "toggle-light": "toggle-dark"}>
+            <h4 className="light-btn-theme" onClick={() => toggleTheme('light')}>
+              Light
+            </h4>
+            <h4 className="dark-btn-theme" onClick={() => toggleTheme('dark')}>
+              Dark
+            </h4>
+          </div>
         </header>
 
-        <div style={{padding: '2rem'}}>
-          <button title="Clears messages from state and localstorage" onClick={() => cleanSlate()}>Clean Slate</button>
-          <form style={{ marginTop: "1rem" }}>
+        <div className="margin-top-1rem" style={{padding: '2rem', background: appTheme === 'dark' ? '#3a3b3d' : '#fff',
+        color: appTheme === 'dark' ? '#fff' : '#000',}}>
+          <form className="margin-top-1rem">
             <input value={state.messageValue} type="text" name="name" placeholder="Enter Message" onChange={(e) => dispatch({type: types.MESSAGEVALUE, value: e.target.value})} />
-            <button style={{ marginLeft: "1rem" }} disabled={!state.messageValue.length} onClick={() => state.messageValue.length ? addMessage() : null}>Add New Message</button>
+            <button className="margin-left-1rem" disabled={!state.messageValue.length} onClick={() => state.messageValue.length ? addMessage() : null}>Add New Message</button>
           </form>
-          <h3> Messages</h3>
+          <div style={{marginBottom: '1rem'}}> 
+            <h3> Messages</h3>          
+            <button title="Clears messages from state and localstorage" style={{backgroundColor: '#c91c56'}} onClick={() => cleanSlate()}>
+              Clean Slate
+            </button>
+          </div>
           {state.messages.length ? 
             <div className="messages-container">
               {state.messages?.length ? state.messages.map((m: Message) => {
