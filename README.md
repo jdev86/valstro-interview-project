@@ -1,4 +1,4 @@
-﻿# Frontend Take-Home Challenge
+﻿# Real-time Chat Project
 
 ## Solution Overview
 
